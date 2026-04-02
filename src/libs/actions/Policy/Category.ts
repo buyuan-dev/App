@@ -447,26 +447,31 @@ function setWorkspaceCategoryEnabled({
     };
 
     pushTransactionViolationsOnyxData(onyxData, policyData, {}, policyCategoriesOptimisticData);
-    appendSetupCategoriesOnboardingData(
-        onyxData,
-        setupCategoryTaskReport,
-        setupCategoryTaskParentReport,
-        isSetupCategoriesTaskParentReportArchived,
-        currentUserAccountID,
-        hasOutstandingChildTask,
-        parentReportAction,
-    );
 
-    if (setupCategoriesAndTagsTaskReport && policyHasTags) {
+    // Only complete the onboarding task when enabling categories (not when disabling), to avoid playing the task complete sound
+    const isEnablingCategory = Object.values(categoriesToUpdate).some((category) => category.enabled);
+    if (isEnablingCategory) {
         appendSetupCategoriesOnboardingData(
             onyxData,
-            setupCategoriesAndTagsTaskReport,
-            setupCategoriesAndTagsTaskParentReport,
-            isSetupCategoriesAndTagsTaskParentReportArchived ?? false,
+            setupCategoryTaskReport,
+            setupCategoryTaskParentReport,
+            isSetupCategoriesTaskParentReportArchived,
             currentUserAccountID,
-            setupCategoriesAndTagsHasOutstandingChildTask ?? false,
-            setupCategoriesAndTagsParentReportAction,
+            hasOutstandingChildTask,
+            parentReportAction,
         );
+
+        if (setupCategoriesAndTagsTaskReport && policyHasTags) {
+            appendSetupCategoriesOnboardingData(
+                onyxData,
+                setupCategoriesAndTagsTaskReport,
+                setupCategoriesAndTagsTaskParentReport,
+                isSetupCategoriesAndTagsTaskParentReportArchived ?? false,
+                currentUserAccountID,
+                setupCategoriesAndTagsHasOutstandingChildTask ?? false,
+                setupCategoriesAndTagsParentReportAction,
+            );
+        }
     }
 
     const parameters = {
