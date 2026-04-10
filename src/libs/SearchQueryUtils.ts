@@ -442,7 +442,7 @@ function getRawFilterListFromQuery(rawQuery: SearchQueryString) {
 }
 
 // Cache for buildSearchQueryJSON to avoid re-running the PEG parser for identical queries.
-// This is a pure function called from 64+ sites — many fire during the same render cycle
+// This is a pure function called from 64+ sites 鈥?many fire during the same render cycle
 // with identical query strings, each running the full parser from scratch.
 const buildSearchQueryJSONCache = new Map<string, SearchQueryJSON | undefined>();
 const BUILD_SEARCH_QUERY_JSON_CACHE_MAX_SIZE = 50;
@@ -791,7 +791,7 @@ function buildQueryStringFromFilterFormValues(filterValues: Partial<SearchAdvanc
         filtersString.push(amountFilter);
     }
 
-    const limitValue = limit ?? options?.limit;
+    const limitValue = options?.limit ?? limit ?? undefined;
     if (limitValue) {
         filtersString.push(`${CONST.SEARCH.SYNTAX_ROOT_KEYS.LIMIT}:${sanitizeSearchValue(limitValue.toString())}`);
     }
